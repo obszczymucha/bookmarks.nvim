@@ -203,6 +203,11 @@ function M.loadBookmarks()
 end
 
 function M.saveBookmarks()
+   if utils.count_bookmarks(config.cache.data) == 0 then
+     utils.delete_file(config.save_file)
+    return
+   end
+
    local data = vim.json.encode(config.cache)
    if config.marks ~= data then
       utils.write_file(config.save_file, data)

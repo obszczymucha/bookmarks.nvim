@@ -118,6 +118,30 @@ M.read_file = function(path, callback)
    end)
 end
 
+M.delete_file = function(path)
+   if M.path_exists(path) then
+      uv.fs_unlink(path, function(err)
+         assert(not err, err)
+      end)
+   end
+end
+
+local function count_keys(t)
+   local count = 0
+   for _ in pairs(t) do
+      count = count + 1
+   end
+   return count
+end
+
+M.count_bookmarks = function(cache)
+  local result = 0
+  for _, bookmarks in pairs(cache) do
+    result = result + count_keys(bookmarks)
+  end
+  return result
+end
+
 function M.warn(...)
    vim.notify(string.format(...), vim.log.levels.WARN)
 end
